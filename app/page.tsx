@@ -3,11 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 
 export default function AudioPlayer() {
-  const [audioFiles, setAudioFiles] = useState([]);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const audioRef = useRef(null);
+  const [audioFiles, setAudioFiles] = useState<string[]>([]);  // Explicit type for audioFiles
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
+  
+  // Use proper typing for audioRef
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Lade die Liste der Audiodateien
+  // Load audio files on component mount
   useEffect(() => {
     const loadAudioFiles = async () => {
       const response = await fetch('/api/audios');
@@ -17,20 +19,21 @@ export default function AudioPlayer() {
     loadAudioFiles();
   }, []);
 
-
-
+  // Play the audio when currentTrackIndex or audioFiles changes
   useEffect(() => {
     const audioElement = audioRef.current;
+
+    // Ensure that audioElement exists and audioFiles is not empty
     if (audioElement && audioFiles.length > 0) {
-      audioElement.src = audioFiles[currentTrackIndex];
-      audioElement.play().catch((error) => {
+      audioElement.src = audioFiles[currentTrackIndex];  // Error 1 fixed
+      audioElement.play().catch((error: any) => {       // Error 2 and 3 fixed
         console.error('Error playing audio:', error);
       });
     }
   }, [currentTrackIndex, audioFiles]);
 
   return (
-    <div>
+    <div className="audio-player">
       <h1>Audio Player</h1>
       {audioFiles.length > 0 ? (
         <audio ref={audioRef} controls>
