@@ -17,14 +17,6 @@ export default function AudioPlayer() {
     loadAudioFiles();
   }, []);
 
-  // Starte die Wiedergabe des nächsten Tracks, wenn der aktuelle Track endet
-  useEffect(() => {
-    const handleTrackEnd = () => {
-      if (currentTrackIndex < audioFiles.length - 1) {
-        setCurrentTrackIndex(currentTrackIndex + 1);
-      }
-    };
-  }, [currentTrackIndex, audioFiles]);
 
 
   useEffect(() => {
