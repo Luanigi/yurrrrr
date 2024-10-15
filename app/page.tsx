@@ -26,7 +26,7 @@ export default function AudioPlayer() {
     // Ensure that audioElement exists and audioFiles is not empty
     if (audioElement && audioFiles.length > 0) {
       audioElement.src = audioFiles[currentTrackIndex];  // Error 1 fixed
-      audioElement.play().catch((error: any) => {       // Error 2 and 3 fixed
+      audioElement.play().catch((error: DOMException) => {
         console.error('Error playing audio:', error);
       });
     }
