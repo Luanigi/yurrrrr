@@ -31,7 +31,7 @@ export default function AudioPlayer() {
 
   return (
     <div className="audio-player">
-      <h1>Audio Player</h1>
+      <h1>Luan yurrrr</h1>
       {audioFiles.length > 0 ? (
         <>
           {/* Audio player controls */}
