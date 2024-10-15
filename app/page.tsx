@@ -24,17 +24,6 @@ export default function AudioPlayer() {
         setCurrentTrackIndex(currentTrackIndex + 1);
       }
     };
-
-    const audioElement = audioRef.current;
-    if (audioElement) {
-      audioElement.addEventListener('ended', handleTrackEnd);
-    }
-
-    return () => {
-      if (audioElement) {
-        audioElement.removeEventListener('ended', handleTrackEnd);
-      }
-    };
   }, [currentTrackIndex, audioFiles]);
 
 
