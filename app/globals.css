@@ -2,22 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.css-selector {
+  background: linear-gradient(324deg, #759af5, #f25592);
+  background-size: 400% 400%;
+
+  -webkit-animation: AnimationName 3s ease infinite;
+  -moz-animation: AnimationName 3s ease infinite;
+  animation: AnimationName 3s ease infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+
+.css-sel {
+  background: linear-gradient(324deg, #0a9bc0, #1d1b47);
+  background-size: 400% 400%;
+
+  -webkit-animation: AnimationName 3s ease infinite;
+  -moz-animation: AnimationName 3s ease infinite;
+  animation: AnimationName 3s ease infinite;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@-webkit-keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
 body {
@@ -28,16 +45,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .audio-player {
-  background-color: white;
+  @apply css-sel ;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 10px 18px #000;
   text-align: center;
-  width: 320px;
+  @apply lg:w-2/4 md:w-1/4 mx-4
 }
 
 h1 {
@@ -52,19 +68,19 @@ audio {
 }
 
 button {
-  background-color: #0070f3;
+  @apply bg-slate-900;
   color: white;
   border: none;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 3rem;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
-  margin: 0 0.5rem;
+  margin: 0 0.5rem 4rem;
 }
 
 button:hover {
-  background-color: #005bb5;
+  @apply bg-slate-800;
 }
 
 button:disabled {

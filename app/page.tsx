@@ -30,8 +30,8 @@ export default function AudioPlayer() {
   }, [currentTrackIndex, audioFiles]);
 
   return (
-    <div className="audio-player">
-      <h1>Luan yurrrr</h1>
+    <div className="audio-player mt-[150px]">
+      <h1 className='text-white'>Luan yurrrr</h1>
       {audioFiles.length > 0 ? (
         <>
           {/* Audio player controls */}
@@ -61,22 +61,22 @@ export default function AudioPlayer() {
           </div>
 
           {/* List of available tracks */}
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <div className='grid gap-5 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 border-white'>
             {audioFiles.map((file, index) => (
-              <li
+              <div
                 key={index}
                 style={{
                   padding: '0.5rem',
                   cursor: 'pointer',
-                  backgroundColor: index === currentTrackIndex ? '#e0e0e0' : 'transparent',
+                  backgroundColor: index === currentTrackIndex ? '#272d36' : 'transparent',
                 }}
-                className='text-black text-lg'
+                className='text-white text-lg border-3 border-white rounded-lg '
                 onClick={() => setCurrentTrackIndex(index)}
               >
                 {`Track ${index + 1}:  ${file.split('/').pop()}`}
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </>
       ) : (
         <p>Loading audio files...</p>
