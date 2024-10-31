@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { openDB } from 'idb';
-import { FaFileAudio } from "react-icons/fa";
+import { FaFileAudio, FaTrashAlt  } from "react-icons/fa";
 import { MdOutlineRepeatOn, MdOutlineRepeatOneOn } from "react-icons/md";
+import { IoPlayCircleSharp } from "react-icons/io5";
 
 const DB_NAME = 'fileUploadsDB';
 const STORE_NAME = 'files';
@@ -121,8 +122,8 @@ export default function FileUpload() {
           <li key={index} className='m-auto bg-zinc-600 rounded-lg border-white border-2 p-2'>
             <span className='text-xl text-white '>{file.name.slice(0, -4)}</span>
             <br />
-            <button onClick={() => playFile(file)}>Play</button>
-            <button onClick={() => deleteFile(file.name)}>Delete</button>
+            <button onClick={() => playFile(file)}><IoPlayCircleSharp /></button>
+            <button onClick={() => deleteFile(file.name)}><FaTrashAlt /></button>
           </li>
         ))}
       </ul>
