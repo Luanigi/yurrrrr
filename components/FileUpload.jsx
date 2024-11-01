@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { openDB } from 'idb';
-import { FaFileAudio, FaTrashAlt  } from "react-icons/fa";
-import { MdOutlineRepeatOn, MdOutlineRepeatOneOn } from "react-icons/md";
-import { IoPlayCircleSharp } from "react-icons/io5";
+import FileList from './FileList';
+import FileInput from './FileInput';
+import AudioControls from './AudioControls';
+import ProgressBar from './ProgressBar';
+import Timestamp from './Timestamp';
 
 const DB_NAME = 'fileUploadsDB';
 const STORE_NAME = 'files';
@@ -10,7 +12,12 @@ const STORE_NAME = 'files';
 export default function FileUpload() {
   const [files, setFiles] = useState([]);
   const [currentFile, setCurrentFile] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [repeat, setRepeat] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
 
   // Initialize IndexedDB
@@ -21,26 +28,17 @@ export default function FileUpload() {
           db.createObjectStore(STORE_NAME, { keyPath: 'name' });
         },
       });
-
       const savedFiles = await db.getAll(STORE_NAME);
       setFiles(savedFiles);
     };
-
     initDB();
   }, []);
 
-  const handleFileUpload = async (event) => {
-    const uploadedFiles = Array.from(event.target.files);
-
+  const handleFileUpload = async (uploadedFiles) => {
     const fileDataPromises = uploadedFiles.map(async (file) => {
       const base64 = await fileToBase64(file);
-      return {
-        name: file.name,
-        data: base64,
-        type: file.type,
-      };
+      return { name: file.name, data: base64, type: file.type };
     });
-
     const fileData = await Promise.all(fileDataPromises);
     setFiles((prevFiles) => [...prevFiles, ...fileData]);
 
@@ -61,74 +59,60 @@ export default function FileUpload() {
 
   const playFile = (file) => {
     setCurrentFile(file.data);
+    setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.src = file.data;
+      audioRef.current.play();
+    }
   };
 
   const deleteFile = async (fileName) => {
     const db = await openDB(DB_NAME, 1);
     await db.delete(STORE_NAME, fileName);
-
-    const updatedFiles = files.filter((file) => file.name !== fileName);
-    setFiles(updatedFiles);
+    setFiles(files.filter((file) => file.name !== fileName));
   };
 
-  const toggleRepeat = () => {
-    setRepeat((prevRepeat) => !prevRepeat);
+  const handleLoadedMetadata = () => {
+    setDuration(audioRef.current.duration);
   };
 
-  // Event handler for when the audio file ends
-  const handleAudioEnded = () => {
+  const handleTimeUpdate = () => {
+    const currentProgress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+    setProgress(currentProgress);
+    setCurrentTime(audioRef.current.currentTime);
+  };
+
+  const handleEnded = () => {
     if (repeat) {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
+    } else {
+      setIsPlaying(false);
     }
   };
 
   return (
-    <div className='w-10/12 m-auto bg-zinc-800 grid justify-center p-10 rounded-lg mt-10'>
-      <h1 className='text-center text-white'>Luan Yurrrr</h1>
-
-
-
-      <div className="file-input-container">
-      <label htmlFor="file-upload" className="file-label">
-        <input
-          type="file"
-          id="file-upload"
-          accept="audio/mpeg, audio/mp3, audio/wav"
-          multiple
-          onChange={handleFileUpload}
-          className="file-input"
-        />
-          <FaFileAudio className="file-icon" size={50} />
-      </label>
-    </div>
-
-    {currentFile && (
-        <div className='mt-10'>
+    <div className='w-10/12 m-auto bg-zinc-800 p-10 rounded-lg mt-10 text-white'>
+      <h1 className='text-center text-white'>Luan yurrr</h1>
+      <FileInput handleFileUpload={handleFileUpload} />
+      {currentFile && (
+        <div className="mt-10">
+          <h2 className="text-center text-lg font-bold mb-4">
+          🎧 {files.find((file) => file.data === currentFile)?.name.slice(0, -4)} 🎧
+          </h2>
           <audio
             ref={audioRef}
-            controls
             src={currentFile}
-            onEnded={handleAudioEnded}
+            onLoadedMetadata={handleLoadedMetadata}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleEnded}
           />
-          <button onClick={toggleRepeat} className='m-auto grid'>
-            {repeat ? <MdOutlineRepeatOneOn /> : <MdOutlineRepeatOn />}
-          </button>
+          <AudioControls audioRef={audioRef} isPlaying={isPlaying} setIsPlaying={setIsPlaying} repeat={repeat} setRepeat={setRepeat}/>
+          <ProgressBar progress={progress} setProgress={setProgress} audioRef={audioRef} />
+          <Timestamp currentTime={currentTime} duration={duration} />
         </div>
       )}
-
-      <ul className='bg-zinc-700 rounded grid gap-5 md:grid-cols-2 grid-cols-1 mt-10 p-5'>
-        {files.map((file, index) => (
-          <li key={index} className='m-auto bg-zinc-600 rounded-lg border-white border-2 p-2'>
-            <span className='text-xl text-white '>{file.name.slice(0, -4)}</span>
-            <br />
-            <button onClick={() => playFile(file)}><IoPlayCircleSharp /></button>
-            <button onClick={() => deleteFile(file.name)}><FaTrashAlt /></button>
-          </li>
-        ))}
-      </ul>
-
-      
+      <FileList files={files} playFile={playFile} deleteFile={deleteFile} />
     </div>
   );
 }
