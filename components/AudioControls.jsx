@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaVolumeUp } from "react-icons/fa";
 import { MdOutlineRepeatOn, MdOutlineRepeatOneOn } from "react-icons/md";
 

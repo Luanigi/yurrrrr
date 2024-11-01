@@ -9,12 +9,12 @@ import Timestamp from './Timestamp';
 const DB_NAME = 'fileUploadsDB';
 const STORE_NAME = 'files';
 
+
 export default function FileUpload() {
   const [files, setFiles] = useState([]);
   const [currentFile, setCurrentFile] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [repeat, setRepeat] = useState(false);
-  const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
