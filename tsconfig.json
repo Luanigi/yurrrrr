@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/Mp3Player.jsx", "components/FileUpload.jsx", "components/FileList.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/Mp3Player.jsx", "components/FileUpload.jsx", "components/FileList.jsx", "components/Nav.jsx"],
   "exclude": ["node_modules"]
 }

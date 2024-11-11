@@ -5,6 +5,7 @@ import FileInput from './FileInput';
 import AudioControls from './AudioControls';
 import ProgressBar from './ProgressBar';
 import Timestamp from './Timestamp';
+import Nav from "./Nav";
 
 const DB_NAME = 'fileUploadsDB';
 const STORE_NAME = 'files';
@@ -92,8 +93,10 @@ export default function FileUpload() {
   };
 
   return (
+    <>
+    <Nav />
     <div className='w-10/12 m-auto bg-zinc-800 p-10 rounded-lg mt-10 text-white'>
-      <h1 className='text-center text-white'>Luan yurrr</h1>
+      <h1 className='text-center text-white'>Datei hochladen ⬇️</h1>
       <FileInput handleFileUpload={handleFileUpload} />
       {currentFile && (
         <div className="mt-10">
@@ -114,5 +117,6 @@ export default function FileUpload() {
       )}
       <FileList files={files} playFile={playFile} deleteFile={deleteFile} />
     </div>
+    </>
   );
 }

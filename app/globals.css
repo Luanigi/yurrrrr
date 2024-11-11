@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .css-selector {
-  background: linear-gradient(324deg, #759af5, #f25592);
-  background-size: 400% 400%;
-
+  /* background: linear-gradient(324deg, #759af5, #f25592); */
+  /* background-size: 400% 400%; */
+  @apply bg-zinc-800 w-full;
   -webkit-animation: AnimationName 3s ease infinite;
   -moz-animation: AnimationName 3s ease infinite;
   animation: AnimationName 3s ease infinite;
@@ -14,7 +14,7 @@
 
 .css-sel {
   background: linear-gradient(324deg, #0a9bc0, #1d1b47);
-  background-size: 400% 400%;
+  /* background-size: 400% 400%; */
 
   -webkit-animation: AnimationName 3s ease infinite;
   -moz-animation: AnimationName 3s ease infinite;
